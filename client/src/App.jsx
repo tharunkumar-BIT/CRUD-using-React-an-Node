@@ -25,6 +25,17 @@ function App() {
     setFilterUsers(filteredUsers);
   };
 
+  //delete function
+  const handleDelete = async (id) => {
+    const isConfirmed = window.confirm(`Are you sure!! Do you want to delete ${users.id}`)
+    if(isConfirmed){
+      await axios.delete(`http://localhost:8000/users/${id}`).then((res) => {
+        setUsers(res.data);
+        setFilterUsers(res.data);
+      });
+    }
+  };
+
   useEffect(() => {
     getUsers();
   }, []);
@@ -56,7 +67,7 @@ function App() {
               filterUsers.map((user, index) => {
                 return (
                   <tr key={index}>
-                    <td>{user.id}</td>
+                    <td>{index+1}</td>
                     <td>{user.name}</td>
                     <td>{user.age}</td>
                     <td>{user.city}</td>
@@ -64,7 +75,12 @@ function App() {
                       <button className="btn green">Edit</button>
                     </td>
                     <td>
-                      <button className="btn red">Delete</button>
+                      <button
+                        className="btn red"
+                        onClick={() => handleDelete(user.id)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 );
