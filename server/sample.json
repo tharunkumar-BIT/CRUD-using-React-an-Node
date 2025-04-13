@@ -8,5 +8,6 @@
     {"id" : 7, "name" : "John wick", "age" : 40, "city" : "US"},
     {"id" : 8, "name" : "Romeo", "age" : 35, "city" : "Italy"},
     {"id" : 9, "name" : "Ricky", "age" : 41, "city" : "Madurai"},
-    {"id" : 10, "name" : "Virat", "age" : 35, "city" : "Benguluru"}
+    {"id" : 10, "name" : "Virat", "age" : 35, "city" : "Benguluru"},
+    {"id" : 11, "name" : "Kholi", "age" : 55, "city" : "Salem"}
 ]
