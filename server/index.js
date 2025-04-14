@@ -47,6 +47,20 @@ app.delete("/users/:id", (req, res) => {
   });
 });
 
+//add new user
+app.post("/users", (req, res) =>{
+  let {name, age, city} = req.body;
+  if(!name || !age || !city){
+    res.status(400).send({message: "All fields required"})
+  }
+  let id = Date.now();
+  users.push({id,name,age,city});
+  fs.writeFile("./sample.json", JSON.stringify(users,null, 2), (err) => {
+    if (err) return res.status(500).json({ error: "Failed to add user" });
+    return res.status(201).json({message: "User detail added successfully"});
+  });
+}); 
+
 app.listen(port, (err) => {
   if (err) console.error(err);
   console.log("App is running in " + port);
