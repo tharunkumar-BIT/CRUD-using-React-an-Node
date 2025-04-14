@@ -61,6 +61,21 @@ app.post("/users", (req, res) =>{
   });
 }); 
 
+//updating user
+app.patch("/users/:id", (req, res) =>{
+  let id = Number(req.params.id);
+  let {name, age, city} = req.body;
+  if(!name || !age || !city){
+    res.status(400).send({message: "All fields required"})
+  }
+  let index = users.findIndex((user)=> user.id == id);
+  users.splice(index, 1, {...req.body});
+  fs.writeFile("./sample.json", JSON.stringify(users,null, 2), (err) => {
+    if (err) return res.status(500).json({ error: "Failed to update user" });
+    return res.status(201).json({message: "User detail updated successfully"});
+  });
+});
+
 app.listen(port, (err) => {
   if (err) console.error(err);
   console.log("App is running in " + port);

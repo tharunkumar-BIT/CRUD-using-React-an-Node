@@ -47,15 +47,24 @@ function App() {
   };
 
   const handleData = (e) => {
-    setUserData({...userData,[e.target.name] : e.target.value});
-  }
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:8000/users",userData).then((res)=>{
-      console.log(res);
-    })
-  }
+    if(userData.id){
+      await axios.patch(`http://localhost:8000/users/${userData.id}`, userData).then((res) => {
+        console.log(res);
+      });
+    }
+    else{
+      await axios.post("http://localhost:8000/users", userData).then((res) => {
+        console.log(res);
+      });
+    }
+    closeModel();
+    setUserData({ name: "", age: "", city: "" });
+  };
 
   //close model
   const closeModel = () => {
@@ -63,7 +72,11 @@ function App() {
     getUsers();
   };
 
-
+  //update function
+  const handleUpdate = (user) => {
+    setUserData(user);
+    setIsModelOpen(true);
+  };
 
   useEffect(() => {
     getUsers();
@@ -103,7 +116,12 @@ function App() {
                     <td>{user.age}</td>
                     <td>{user.city}</td>
                     <td>
-                      <button className="btn green">Edit</button>
+                      <button
+                        className="btn green"
+                        onClick={() => handleUpdate(user)}
+                      >
+                        Edit
+                      </button>
                     </td>
                     <td>
                       <button
@@ -124,7 +142,7 @@ function App() {
               <span className="close" onClick={closeModel}>
                 &times;
               </span>
-              <h3>User Record</h3>
+              <h3>{userData.id ? "Update Record" : "Add Record"}</h3>
 
               <div className="input-group">
                 <label htmlFor="name">Full name</label>
@@ -159,7 +177,9 @@ function App() {
                   placeholder="Enter city"
                 />
               </div>
-              <button className="btn green" onClick={handleSubmit}>Submit</button>
+              <button className="btn green" onClick={handleSubmit}>
+                {userData.id ? "Update user" : "Add user"}
+              </button>
             </div>
           </div>
         )}
